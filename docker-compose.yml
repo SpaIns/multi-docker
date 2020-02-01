@@ -6,6 +6,8 @@ services:
     image: 'redis:latest'
   # This was server, but to make nginx happy, calling it api
   api:
+    depends_on:
+      - postgres
     build:
       # Note context is for workdir etc. Dockerfile is just the core name
       dockerfile: Dockerfile.dev
@@ -31,6 +33,9 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
   worker:
     build:
       dockerfile: Dockerfile.dev
@@ -38,6 +43,9 @@ services:
     volumes:
       - /app/node_modules
       - ./worker:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
   nginx:
     # Should always be running
     restart: always

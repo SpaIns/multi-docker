@@ -40,6 +40,7 @@ class Fib extends Component {
                 </div>
             )
         }
+        return entries
     }
 
     handleSubmit = async (event) => {
@@ -59,7 +60,7 @@ class Fib extends Component {
                     <label>Enter your index</label>
                     <input 
                     value = {this.state.index}
-                    onChange={event => this.state({index: event.target.value})}
+                    onChange={event => this.setState({index: event.target.value})}
                     />
                     <button>Submit</button>
                 </form>
