@@ -1,0 +1,39 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres:latest'
+  redis:
+    image: 'redis:latest'
+  server:
+    build:
+      # Note context is for workdir etc. Dockerfile is just the core name
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+      # Don't try to overwrite this folder
+      - /app/node_modules
+      # Redirect anything from outside server to internal app
+      - ./server:/app
+    environment:
+      # Look at image documentation to find values
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./worker
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
