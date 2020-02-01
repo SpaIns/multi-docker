@@ -4,7 +4,8 @@ services:
     image: 'postgres:latest'
   redis:
     image: 'redis:latest'
-  server:
+  # This was server, but to make nginx happy, calling it api
+  api:
     build:
       # Note context is for workdir etc. Dockerfile is just the core name
       dockerfile: Dockerfile.dev
@@ -37,3 +38,12 @@ services:
     volumes:
       - /app/node_modules
       - ./worker:/app
+  nginx:
+    # Should always be running
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    # Map to local port 3050
+    ports:
+      - '3050:80'
