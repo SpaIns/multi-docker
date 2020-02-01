@@ -4,22 +4,22 @@ services:
 
 # Run our tests using development docker file
 before_install:
-  - docker build -t spa/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t sachtmann/react-test -f ./client/Dockerfile.dev ./client
 
 scripts:
- - docker run -e CI=true spa/react-test npm test
+ - docker run -e CI=true sachtmann/react-test npm test
 
 # Build our prod version after successful tests
 after_success:
-- docker build -t spa/multi-client ./client
-- docker build -t spa/multi-nginx ./nginx
-- docker build -t spa/multi-server ./server
-- docker build -t spa/multi-worker ./worker
+- docker build -t sachtmann/multi-client ./client
+- docker build -t sachtmann/multi-nginx ./nginx
+- docker build -t sachtmann/multi-server ./server
+- docker build -t sachtmann/multi-worker ./worker
 # Login to docker CLI
 # Login by echoing the password to the input prompt after the login command
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 # Take images and push them to docker hub
-- docker push spa/multi-client
-- docker push spa/multi-nginx
-- docker push spa/multi-server
-- docker push spa/multi-worker
+- docker push sachtmann/multi-client
+- docker push sachtmann/multi-nginx
+- docker push sachtmann/multi-server
+- docker push sachtmann/multi-worker
